@@ -1,14 +1,38 @@
+using BuisnessLogics.Repository;
 using DataLayer.Models;
+using Employee_Api.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace MsUnitTest
 {
     [TestClass]
     public class EmployeeTest
     {
+        private readonly IEmployeeService _employeeService;
+        public EmployeeTest(IEmployeeService employeeService)
+        {
+            _employeeService = employeeService;
+        }
+
         [TestMethod]
         public void TestGetAllEmployees()
         {
+            // Arrange
+            var controller = new EmployeeController(_employeeService);
+            
+            // Act
+            var response = controller.Get(10);
+
+            var okResult = response as OkNegotiatedContentResult<Employee>;
+
+
+
+            //Act
+
             //var mockEmps = new List<Employee>();
             //mockEmps.Add(new Employee
             //{ Id = 1, Name = "F1", City = "Trichy", State = "TN",Mobile = "994500338", IsActive = true });
