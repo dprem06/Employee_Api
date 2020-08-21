@@ -55,6 +55,11 @@ namespace BuisnessLogics.Repository
             return await context.Employee.ToListAsync();
         }
 
+        /// <summary>
+        /// Get Employee by Id
+        /// </summary>
+        /// <param name="id">Employee Id</param>
+        /// <returns>Employee</returns>
         public async Task<Employee> GetEmployeeById(int id)
         {
             return await context.Employee.FirstOrDefaultAsync(e => e.Id == id);

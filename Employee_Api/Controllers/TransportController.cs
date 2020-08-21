@@ -42,20 +42,5 @@ namespace Employee_Api.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
-
-
-        // PUT api/<TransportController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-
-        }
-
-        // DELETE api/<TransportController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-
-        }
     }
 }
