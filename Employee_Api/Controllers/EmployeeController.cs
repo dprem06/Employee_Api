@@ -32,12 +32,17 @@ namespace Employee_Api.Controllers
         {
             try
             {
-                return Ok(await _employeeService.GetEmployees());
+                var employees = await _employeeService.GetEmployees();
+                if (employees == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(employees);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error retrieving data from the database");
+                return BadRequest();
             }
 
         }
@@ -45,34 +50,43 @@ namespace Employee_Api.Controllers
         // GET: api/<EmployeeController>/1
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int? id)
         {
+            if (id == null)
+            {
+                return BadRequest();
+
+            }
+
             try
             {
-                return Ok(await _employeeService.GetEmployeeById(id));
+                var employeeData = await _employeeService.GetEmployeeById((int)id);
+                if (employeeData == null)
+                {
+                    return NotFound();
+                }
+                return Ok(employeeData);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error retrieving data from the database");
+                return BadRequest();
             }
         }
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public async Task<ActionResult<int>> Post([FromBody] Employee employee)
+        public async Task<ActionResult> Post([FromBody] Employee employee)
         {
             try
             {
                 if (employee == null)
                     return BadRequest();
 
-                return await _employeeService.AddEmployee(employee);
+                return Ok(await _employeeService.AddEmployee(employee));
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new employee record");
+                return BadRequest();
             }
 
         }
@@ -80,17 +94,29 @@ namespace Employee_Api.Controllers
 
         // DELETE api/<EmployeeController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
+            int result = 0;
+
+            if (id == null)
+            {
+                return BadRequest();
+
+            }
+
             try
             {
-                _employeeService.DeleteEmployee(id);
-                return Ok();
+                result = await _employeeService.DeleteEmployee((int)id);
+                if (result == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error creating new employee record");
+                return BadRequest();
             }
         }
     }

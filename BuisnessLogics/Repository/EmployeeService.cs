@@ -32,15 +32,18 @@ namespace BuisnessLogics.Repository
         /// Add new employee
         /// </summary>
         /// <returns>New Employee id</returns>
-        public void DeleteEmployee(int id)
+        public async Task<int> DeleteEmployee(int id)
         {
-            var result = context.Employee.FirstOrDefault(e => e.Id == id);
-            if (result != null)
+            int result = 0;
+            var employee = context.Employee.FirstOrDefault(e => e.Id == id);
+            if (employee != null)
             {
-                context.Employee.Remove(result);
-                context.SaveChangesAsync();
+                context.Employee.Remove(employee);
+                result = await context.SaveChangesAsync();
+                return result;
             }
 
+            return result;
         }
 
         /// <summary>

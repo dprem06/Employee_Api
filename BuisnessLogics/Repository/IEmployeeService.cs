@@ -31,6 +31,6 @@ namespace BuisnessLogics.Repository
         /// Delete Employee
         /// </summary>
         /// <returns>Deleted status</returns>
-        void DeleteEmployee(int id);
+        Task<int> DeleteEmployee(int id);
     }
 }
